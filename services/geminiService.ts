@@ -37,8 +37,10 @@ export const generateWallpaper = async (
     });
 
     // Iterate through parts to find the image data
-    if (response.candidates && response.candidates.length > 0) {
-      const parts = response.candidates[0].content.parts;
+    // Fix: Use optional chaining to safely access nested properties
+    const parts = response.candidates?.[0]?.content?.parts;
+    
+    if (parts) {
       for (const part of parts) {
         if (part.inlineData && part.inlineData.data) {
           const base64Data = part.inlineData.data;
