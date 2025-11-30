@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Creative Notebook</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&family=Patrick+Hand&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              hand: ['"Indie Flower"', 'cursive'],
+              marker: ['"Patrick Hand"', 'cursive'],
+              sans: ['"Inter"', 'sans-serif'],
+            },
+            colors: {
+              paper: '#fcfbf9',
+              'paper-dark': '#f0efe9',
+              ink: '#2d3748',
+              line: '#94a3b8', /* Darker blue-gray for lines */
+              highlight: '#f6ad55',
+              accent: '#e53e3e',
+              leather: '#5d4037',
+              'leather-dark': '#3e2723',
+            },
+            boxShadow: {
+              'page-left': '-5px 5px 15px rgba(0,0,0,0.1)',
+              'page-right': '5px 5px 15px rgba(0,0,0,0.1)',
+              'spine': 'inset -10px 0 20px -10px rgba(0,0,0,0.2)',
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      /* GLOBAL RESET */
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        /* Wood Texture */
+        background-color: #3e2723;
+        background-image: url("data:image/svg+xml,%3Csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3Cpattern id='wood' width='100' height='100' patternUnits='userSpaceOnUse'%3E%3Cpath d='M0 0h100v100H0z' fill='%234e342e'/%3E%3Cpath d='M0 20c20 0 20-20 40-20s20 20 40 20 20-20 40-20v2c-20 0-20 20-40 20s-20-20-40-20-20 20-40 20z' fill='%233e2723' fill-opacity='0.4'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='url(%23wood)'/%3E%3C/svg%3E");
+        overflow: hidden;
+        height: 100vh;
+        perspective: 1500px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      
+      /* Scrollbar */
+      ::-webkit-scrollbar {
+        width: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent; 
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #cbd5e1; 
+        border-radius: 3px;
+      }
+
+      /* 3D Book Styles */
+      .book-scene {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        perspective: 2000px;
+      }
+
+      .book {
+        position: relative;
+        width: 900px; /* 450px per page */
+        height: 600px;
+        transform-style: preserve-3d;
+        transition: transform 0.6s ease;
+      }
+
+      /* Mobile adjustment */
+      @media (max-width: 950px) {
+        .book {
+          width: 360px;
+          height: 550px;
+        }
+        .page {
+          width: 100% !important;
+          left: 0 !important;
+        }
+        .page.flipped {
+          transform: rotateY(0deg) !important; 
+        }
+      }
+
+      .page {
+        position: absolute;
+        width: 50%;
+        height: 100%;
+        top: 0;
+        left: 50%; /* Pages start on the right side */
+        transform-origin: left center;
+        transform-style: preserve-3d;
+        transition: transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1);
+        background-color: #fcfbf9;
+        cursor: default;
+      }
+
+      .page.flipped {
+        transform: rotateY(-180deg);
+      }
+
+      .front, .back {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        backface-visibility: hidden;
+        overflow: hidden;
+        background-color: #fcfbf9;
+      }
+
+      .front {
+        z-index: 2;
+        box-shadow: inset 10px 0 20px -10px rgba(0,0,0,0.1); /* Spine shadow right page */
+        border-right: 1px solid #e2e8f0;
+        border-top: 1px solid #e2e8f0;
+        border-bottom: 1px solid #e2e8f0;
+        border-radius: 0 4px 4px 0;
+      }
+
+      .back {
+        transform: rotateY(180deg);
+        z-index: 1;
+        box-shadow: inset -10px 0 20px -10px rgba(0,0,0,0.1); /* Spine shadow left page */
+        border-left: 1px solid #e2e8f0;
+        border-top: 1px solid #e2e8f0;
+        border-bottom: 1px solid #e2e8f0;
+        border-radius: 4px 0 0 4px;
+      }
+      
+      .lines {
+        /* Notebook Lines - 28px height */
+        background-image: repeating-linear-gradient(transparent, transparent 27px, #cbd5e1 27px, #cbd5e1 28px);
+        background-attachment: local;
+        /* Padding to align text to lines 
+           3.6rem is approx 57.6px, ensuring text baseline sits well on the line 
+           Increased Horizontal Padding to avoid text cutoff
+        */
+        padding-top: 3.6rem; 
+        padding-left: 2.5rem;
+        padding-right: 2.5rem;
+        padding-bottom: 1rem;
+      }
+      
+      /* Cover Styles */
+      .cover-front {
+        background-color: #5d4037;
+        background-image: linear-gradient(135deg, #5d4037 0%, #4e342e 100%);
+        color: #e2e8f0;
+        border-radius: 0 6px 6px 0;
+        border: 2px solid #3e2723;
+        box-shadow: 5px 5px 15px rgba(0,0,0,0.3);
+        padding: 2rem;
+      }
+      
+      .cover-back {
+        background-color: #5d4037;
+        background-image: linear-gradient(-135deg, #5d4037 0%, #4e342e 100%); /* Mirrored gradient */
+        color: #e2e8f0;
+        border-radius: 6px 0 0 6px; /* Mirrored radius */
+        border: 2px solid #3e2723;
+        box-shadow: -5px 5px 15px rgba(0,0,0,0.3); /* Mirrored shadow */
+        padding: 2rem;
+      }
+
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.30.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react": "https://aistudiocdn.com/react@^19.2.0"
+  }
+}
+</script>
+</head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
