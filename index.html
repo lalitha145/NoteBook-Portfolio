@@ -3,7 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Notebook Portfolio</title>
+    <title>My Creative Notebook</title>
+    <!-- We keep Tailwind CDN for simplicity, though normally this would move to postcss -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&family=Patrick+Hand&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <script>
@@ -19,7 +20,7 @@
               paper: '#fcfbf9',
               'paper-dark': '#f0efe9',
               ink: '#2d3748',
-              line: '#94a3b8',
+              line: '#94a3b8', /* Darker blue-gray for lines */
               highlight: '#f6ad55',
               accent: '#e53e3e',
               leather: '#5d4037',
@@ -148,6 +149,10 @@
         /* Notebook Lines - 28px height */
         background-image: repeating-linear-gradient(transparent, transparent 27px, #cbd5e1 27px, #cbd5e1 28px);
         background-attachment: local;
+        /* Padding to align text to lines 
+           3.6rem is approx 57.6px, ensuring text baseline sits well on the line 
+           Increased Horizontal Padding to avoid text cutoff
+        */
         padding-top: 3.6rem; 
         padding-left: 2.5rem;
         padding-right: 2.5rem;
@@ -176,12 +181,12 @@
       }
 
     </style>
-  <script type="importmap">
+<script type="importmap">
 {
   "imports": {
-    "react/": "https://aistudiocdn.com/react@^19.2.0/",
     "react": "https://aistudiocdn.com/react@^19.2.0",
     "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
     "@google/genai": "https://aistudiocdn.com/@google/genai@^1.30.0",
     "vite": "https://aistudiocdn.com/vite@^7.2.4",
     "@vitejs/plugin-react": "https://aistudiocdn.com/@vitejs/plugin-react@^5.1.1"
